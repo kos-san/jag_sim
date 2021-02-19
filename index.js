@@ -214,6 +214,7 @@ window.addEventListener("load", function () {
       let max_medal = 0;
       let min_medal = 0;
       let randomNumbers = [];
+      let resultMedals = [];
 
       function randomInt(num, randomNumbers) {
         var rand = Math.floor(Math.random() * num);
@@ -222,6 +223,7 @@ window.addEventListener("load", function () {
       }
 
       for (i = 1; i <= total_game; i++) {
+        resultMedals.push(medal);
         medal -= 3;
 
         if (l > max_i) {
@@ -329,6 +331,85 @@ window.addEventListener("load", function () {
         sumError.textContent = sumErrorMessage;
       }
 
+      // スランプグラフ
+      Highcharts.chart("container", {
+        title: {
+          text: "スランプグラフ",
+        },
+
+        subtitle: {
+          text: "アイムジャグラーEX-AE",
+        },
+
+        yAxis: {
+          title: {
+            text: "差枚数",
+          },
+        },
+
+        // xAxis: {
+        //   accessibility: {
+        //     rangeDescription: "？？？",
+        //   },
+        // },
+
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "long",
+        },
+
+        plotOptions: {
+          series: {
+            label: {
+              connectorAllowed: true,
+            },
+            pointStart: 0,
+          },
+        },
+
+        series: [
+          {
+            name: "コイン（枚）",
+            data: resultMedals,
+          },
+          // {
+          //   name: "Manufacturing",
+          //   data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434],
+          // },
+          // {
+          //   name: "Sales & Distribution",
+          //   data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387],
+          // },
+          // {
+          //   name: "Project Development",
+          //   data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227],
+          // },
+          // {
+          //   name: "Other",
+          //   data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111],
+          // },
+        ],
+
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 500,
+              },
+              chartOptions: {
+                legend: {
+                  layout: "horizontal",
+                  align: "center",
+                  verticalAlign: "bottom",
+                },
+              },
+            },
+          ],
+        },
+      });
+      // グラフーここまで
+
       // デバッグ用
       // console.log(`差枚数:${medal}枚`);
       // console.log(`ジャグ連回数: ${jag_ren}`);
@@ -348,6 +429,7 @@ window.addEventListener("load", function () {
       // );
       // console.log(results);
       // console.log(randomNumbers);
+      // console.log(resultMedals);
 
       // 演算
     } else {
