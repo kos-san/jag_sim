@@ -4,5 +4,11 @@
 } */
 .error-message ul {
   list-style: none;
+}
+
+.error-message {
   color: red;
+}
+.hidden {
+  display: none;
 }

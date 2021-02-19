@@ -46,7 +46,27 @@ window.addEventListener("load", function () {
   });
 
   document.getElementById("start").onclick = () => {
+    const elementSet = [
+      "bb_count",
+      "reg_count",
+      "bonus_sum",
+      "total_medal",
+      "big_pro",
+      "reg_pro",
+    ];
+
+    elementSet.forEach((t) => {
+      document.getElementById(`${t}`).textContent = "演算中...";
+    });
+
     const error = document.getElementById("error");
+    const hidden = [
+      document.getElementById("hidden1"),
+      document.getElementById("hidden2"),
+      document.getElementById("hidden3"),
+    ];
+    const sumError = document.getElementById("sum_error");
+    sumError.style = "display: none;";
     if (set > 0 && total_game > 0) {
       document.getElementById("out-game").textContent = `${total_game}回転`;
       error.style = "display: none;";
@@ -98,7 +118,7 @@ window.addEventListener("load", function () {
           let n = cherry_big_set[set];
           for (i = 0; i < n; i++) {
             cherry_big.push("cherry_big");
-            results.push(cherry_big);
+            results.push("cherry_big");
           }
         },
         reg(reg, reg_set, results, set) {
@@ -181,8 +201,7 @@ window.addEventListener("load", function () {
       setting.bel(bel, bel_set, results);
 
       results = shuffle(results);
-      results = shuffle(results);
-      results = shuffle(results);
+
       // console.log(results);
 
       // フラグ作成
@@ -192,6 +211,8 @@ window.addEventListener("load", function () {
       let reg_count = 0;
       let jag_ren = 0;
       let medal = 0;
+      let max_medal = 0;
+      let min_medal = 0;
       let randomNumbers = [];
 
       function randomInt(num, randomNumbers) {
@@ -219,7 +240,7 @@ window.addEventListener("load", function () {
           l = 0;
           medal += 345;
         } else if (result === "cherry_big") {
-          console.log(`${i}回転目：チェリーREG`);
+          console.log(`${l}回転目：チェリーBIG`);
           big_count++;
           if (l <= 100) {
             jag_ren++;
@@ -262,40 +283,69 @@ window.addEventListener("load", function () {
         } else {
           l += 1;
         }
+        if (medal > max_medal) {
+          max_medal = medal;
+        } else if (medal < min_medal) {
+          min_medal = medal;
+        }
       }
 
       // 結果ログ
       if (big_count > 0 && reg_count > 0) {
-        let big_pro = total_game / big_count;
-        let reg_pro = total_game / reg_count;
+        let big_pro = Math.floor(total_game / big_count);
+        let reg_pro = Math.floor(total_game / reg_count);
         // 合算 = (BIG確率 * REG確率) / (BIG確率 + REG確率)
-        let sum = (big_pro * reg_pro) / (big_pro + reg_pro);
-        console.log("終了");
-        console.log("----------------");
-        console.log(
-          `設定：${set} 回転数：${total_game} 最大ハマり回数：${max_i}回`
-        );
-        console.log(`BIG:${big_count}回 => ${big_pro}分の１`);
-        console.log(`REG:${reg_count}回 => ${reg_pro}分の１`);
-        console.log(`合算:${sum}`);
+        let sum = Math.floor((big_pro * reg_pro) / (big_pro + reg_pro));
+
+        // ブラウザーコンソールデバッグ用
+        // console.log("終了");
+        // console.log("----------------");
+        // console.log(
+        //   `設定：${set} 回転数：${total_game} 最大ハマり回数：${max_i}回`
+        // );
+        // console.log(`BIG:${big_count}回 => ${big_pro}分の１`);
+        // console.log(`REG:${reg_count}回 => ${reg_pro}分の１`);
+        // console.log(`合算:${sum}`);
+
+        const iAe = [big_count, reg_count, sum, medal, big_pro, reg_pro];
+        let iAeNum = 0;
+        hidden.forEach((hidden) => {
+          hidden.style = "display:inline;";
+        });
+
+        elementSet.forEach((t) => {
+          document.getElementById(t).textContent = iAe[iAeNum];
+          iAeNum++;
+        });
+        if (medal < 0) {
+          document.getElementById("total_medal").style = "color: red;";
+        } else {
+          document.getElementById("total_medal").style = "color: black;";
+        }
       } else {
-        console.log("データが少なすぎるため、解析できませんでした");
+        const sumErrorMessage = "データが少なすぎるため、解析できませんでした";
+
+        sumError.style = "display: block;";
+        sumError.textContent = sumErrorMessage;
       }
 
-      console.log(`差枚数:${medal}枚`);
-      console.log(`ジャグ連回数: ${jag_ren}`);
-      console.log(
-        set,
-        big_set[set],
-        cherry_big_set[set],
-        reg_set[set],
-        cherry_reg_set[set],
-        replay_set,
-        cherry_set,
-        pielo_set,
-        bel_set,
-        grape_set[set]
-      );
+      // デバッグ用
+      // console.log(`差枚数:${medal}枚`);
+      // console.log(`ジャグ連回数: ${jag_ren}`);
+      // console.log(`最大枚数；${max_medal}`);
+      // console.log(`最低枚数：${min_medal}`);
+      // console.log(
+      //   set,
+      //   big.length,
+      //   cherry_big.length,
+      //   reg.length,
+      //   cherry_reg.length,
+      //   replay.length,
+      //   cherry.length,
+      //   pielo.length,
+      //   bel.length,
+      //   grape.length
+      // );
       // console.log(results);
       // console.log(randomNumbers);
 
