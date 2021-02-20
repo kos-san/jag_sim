@@ -76,34 +76,37 @@ window.addEventListener("load", function () {
       let results = [];
 
       let big = [];
-      const big_set = [0, 160, 164, 164, 168, 168, 172];
+      const big_set = [0, 228, 232, 240, 248, 260, 272];
 
       let cherry_big = [];
-      const cherry_big_set = [0, 68, 68, 68, 72, 72, 72];
+      const cherry_big_set = [0, 44, 48, 50, 51, 54, 60];
 
       let reg = [];
-      const reg_set = [0, 100, 104, 132, 144, 172, 172];
+      const reg_set = [0, 152, 180, 192, 224, 236, 272];
 
       let cherry_reg = [];
-      const cherry_reg_set = [0, 44, 44, 56, 60, 72, 72];
+      const cherry_reg_set = [0, 53, 57, 59, 69, 69, 73];
 
       let grape = [];
-      const grape_set = [0, 10099, 10099, 10099, 10099, 10099, 10599];
+      const grape_set = [0, 10320, 10403, 10486, 10519, 10605, 10797];
 
       let replay = [];
-      const replay_set = 8980;
+      const replay_set = 8977;
 
       let cherry = [];
-      const cherry_set = 1968;
+      const cherry_set = [0, 1819, 1823, 1889, 1956, 1962, 1972];
+
+      let middle_cherry = [];
+      const middle_cherry_set = 20;
 
       let pielo = [];
-      const pielo_set = 60;
+      const pielo_set = 64;
 
       let bel = [];
-      const bel_set = 60;
+      const bel_set = 64;
 
       let lost = [];
-      const lost_set = [0, 43997, 43989, 43949, 43925, 43885, 43381];
+      const lost_set = [0, 43795, 43668, 43495, 43344, 43225, 42965];
 
       // 各フラグのセッティング
       const setting = {
@@ -149,11 +152,18 @@ window.addEventListener("load", function () {
             results.push("replay");
           }
         },
-        cherry(cherry, cherry_set, results) {
-          let n = cherry_set;
+        cherry(cherry, cherry_set, results, set) {
+          let n = cherry_set[set];
           for (i = 0; i < n; i++) {
             cherry.push("cherry");
             results.push("cherry");
+          }
+        },
+        middle_cherry(middle_cherry, middle_cherry_set, results) {
+          let n = middle_cherry_set;
+          for (i = 0; i < n; i++) {
+            middle_cherry.push("middle_cherry");
+            results.push("middle_cherry");
           }
         },
         pielo(pielo, pielo_set, results) {
@@ -196,7 +206,8 @@ window.addEventListener("load", function () {
       setting.cherry_reg(cherry_reg, cherry_reg_set, results, set);
       setting.grape(grape, grape_set, results, set);
       setting.replay(replay, replay_set, results);
-      setting.cherry(cherry, cherry_set, results);
+      setting.cherry(cherry, cherry_set, results, set);
+      setting.middle_cherry(middle_cherry, middle_cherry_set, results);
       setting.pielo(pielo, pielo_set, results);
       setting.bel(bel, bel_set, results);
 
@@ -231,8 +242,13 @@ window.addEventListener("load", function () {
 
         let randomNum = randomInt(65536, randomNumbers);
         result = results[randomNum];
-        if (result === "big") {
-          console.log(`${l}回転目：BIG`);
+        if (result === "big" || result === "middle_cherry") {
+          if (result === "big") {
+            console.log(`${l}回転目：BIG`);
+          } else {
+            console.log(`${l}回転目：中段チェリーBIG`);
+          }
+
           big_count++;
           if (l <= 100) {
             jag_ren++;
@@ -428,7 +444,7 @@ window.addEventListener("load", function () {
       //   bel.length,
       //   grape.length
       // );
-      // console.log(results);
+      console.log(results);
       // console.log(randomNumbers);
       // console.log(resultMedals);
 
