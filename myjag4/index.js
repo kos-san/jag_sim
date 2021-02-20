@@ -355,7 +355,7 @@ window.addEventListener("load", function () {
         },
 
         subtitle: {
-          text: "アイムジャグラーEX-AE",
+          text: "マイジャグラーⅣ",
         },
 
         yAxis: {
